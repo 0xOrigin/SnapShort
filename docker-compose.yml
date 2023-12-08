@@ -27,6 +27,7 @@ services:
     restart: always
     ports:
       - 80:80
+      - 443:443
     volumes:
       - static_volume:/home/app/web/public
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
@@ -39,6 +40,7 @@ services:
   db:
     image: postgres:16.1-alpine
     restart: always
+    user: postgres
     ports:
       - 5432:5432
     volumes:
