@@ -3,18 +3,23 @@
 const dotenv = require('dotenv').config({ path: '.env', override: true });
 const app = require('./snapshort-backend/app');
 const { db } = require('./snapshort-backend/config');
+const {
+  uncaughtExceptionHandler,
+  unhandledRejectionHandler,
+  handleSIGTERM,
+} = require('./snapshort-backend/errorHandlers');
 
 const PORT = process.env.PORT || 3000;
 
-process.on('uncaughtException', (err) => {
-  console.log('[!] UNCAUGHT EXCEPTION! Shutting down...');
-  console.log(err.name, err.message);
-  process.exit(1);
-});
 
 const server = app.listen(PORT, () => {
   console.log(`[+] Server is running on port ${PORT}...`);
 });
+
+process.on('uncaughtException', uncaughtExceptionHandler);
+process.on('unhandledRejection', (err) => unhandledRejectionHandler(err, server));
+process.on('SIGTERM', () => handleSIGTERM(server));
+
 
 db.authenticate()
   .then(() => {
@@ -27,18 +32,3 @@ db.authenticate()
       console.log('[!] Server closed...');
     });
   });
-
-process.on('unhandledRejection', (err) => {
-  console.log('[!] UNHANDLED REJECTION! Shutting down...');
-  console.log(err.name, err.message);
-  server.close(() => {
-    console.log('[!] Server closed...');
-  });
-});
-
-process.on('SIGTERM', () => {
-  console.log('[!] SIGTERM RECEIVED. Shutting down gracefully');
-  server.close(() => {
-    console.log('[+] Process terminated!');
-  });
-});
