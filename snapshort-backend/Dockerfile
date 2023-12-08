@@ -20,5 +20,6 @@ RUN apk update \
 # Run this command to install all dependencies
 RUN npm install
 
+USER node
 # Port where the Node.js app runs from .env file
 EXPOSE $PORT
