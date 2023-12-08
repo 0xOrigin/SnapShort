@@ -1,3 +1,5 @@
+const e = require("express");
+
 module.exports.jsonResponseMiddleware = (req, res, next) => {
   res.jsonResponse = (data, statusCode=200, message='Success', pagination=null) => {
 
@@ -14,9 +16,24 @@ module.exports.jsonResponseMiddleware = (req, res, next) => {
     }
 
     if (statusCode >= 400) {
+      errorShape = {
+        message: data.message,
+        stackTrace: data.stack,
+        error: data
+      }
+      
+      if (process.env.NODE_ENV === 'production') {
+        delete errorShape.stackTrace
+        delete errorShape.error
+
+        if (!data.isOperational) {
+          errorShape.message = 'Something went wrong!'
+        }
+      }
+      
       response.message = 'Fail'
       response.data = null
-      response.error = [data]
+      response.error = [errorShape]
     }
 
     return res.status(statusCode).json(response);
