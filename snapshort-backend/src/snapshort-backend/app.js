@@ -7,7 +7,7 @@ const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const helmet = require('helmet');
 const hpp = require('hpp');
-const { errorHandler } = require('./errorHandlers');
+const { AppError, errorHandler } = require('./errorHandlers');
 const { jsonResponseMiddleware } = require('./jsonResponse');
 
 const app = express();
@@ -44,14 +44,10 @@ app.use('/', (req, res, next) => {
     app: 'Snapshort',
     version: '1.0.0',
   }, 200);
-  // next(new Error('This is an error'));
 });
 
 app.all('*', (req, res, next) => {
-  res.status(404).json({
-    status: 'fail',
-    message: `Can't find ${req.originalUrl} on this server.`,
-  });
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
 app.use(errorHandler);
