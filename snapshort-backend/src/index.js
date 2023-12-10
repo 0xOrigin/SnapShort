@@ -1,6 +1,7 @@
 'use strict';
 
-const dotenv = require('dotenv').config({ path: '.env', override: true });
+const path = require('path');
+const dotenv = require('dotenv').config({ path: path.resolve(__dirname, '../../.env'), debug: true });
 const {
   app,
   db,
@@ -19,16 +20,3 @@ const server = app.listen(PORT, () => {
 process.on('uncaughtException', async(err) => await uncaughtExceptionHandler(err, server));
 process.on('unhandledRejection', async(err) => await unhandledRejectionHandler(err, server));
 process.on('SIGTERM', () => handleSIGTERM(server));
-
-
-db.authenticate()
-  .then(() => {
-    console.log('[+] Database connected...');
-  })
-  .catch((err) => {
-    console.log('Error: ' + err);
-    console.log('[!] Database connection failed...');
-    server.close(() => {
-      console.log('[!] Server closed...');
-    });
-  });

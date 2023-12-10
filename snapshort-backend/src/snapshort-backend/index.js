@@ -2,7 +2,7 @@ const app = require('./app');
 
 module.exports = {
     app,
-    ...require('./config'),
+    ...require('./databases'),
     ...require('./errorHandlers'),
     ...require('./jsonResponse')
 };
