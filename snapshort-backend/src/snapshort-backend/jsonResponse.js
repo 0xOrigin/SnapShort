@@ -25,10 +25,6 @@ module.exports.jsonResponseMiddleware = (req, res, next) => {
       if (process.env.NODE_ENV === 'production') {
         delete errorShape.stackTrace
         delete errorShape.error
-
-        if (!data.isOperational) {
-          errorShape.message = 'Something went wrong!'
-        }
       }
       
       response.message = 'Fail'
