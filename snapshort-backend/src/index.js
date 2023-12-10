@@ -1,13 +1,13 @@
 'use strict';
 
 const dotenv = require('dotenv').config({ path: '.env', override: true });
-const app = require('./snapshort-backend/app');
-const { db } = require('./snapshort-backend/config');
 const {
+  app,
+  db,
   uncaughtExceptionHandler,
   unhandledRejectionHandler,
   handleSIGTERM,
-} = require('./snapshort-backend/errorHandlers');
+} = require('./snapshort-backend');
 
 const PORT = process.env.PORT || 3000;
 
@@ -16,8 +16,8 @@ const server = app.listen(PORT, () => {
   console.log(`[+] Server is running on port ${PORT}...`);
 });
 
-process.on('uncaughtException', uncaughtExceptionHandler);
-process.on('unhandledRejection', (err) => unhandledRejectionHandler(err, server));
+process.on('uncaughtException', async(err) => await uncaughtExceptionHandler(err, server));
+process.on('unhandledRejection', async(err) => await unhandledRejectionHandler(err, server));
 process.on('SIGTERM', () => handleSIGTERM(server));
 
 
