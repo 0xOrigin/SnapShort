@@ -7,8 +7,12 @@ const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const helmet = require('helmet');
 const hpp = require('hpp');
-const { AppError, errorHandler } = require('./errorHandlers');
 const { jsonResponseMiddleware } = require('./jsonResponse');
+const {
+  AppError,
+  errorHandlerMiddleware,
+  nonOperationalErrorHandlerMiddleware
+} = require('./errorHandlers');
 
 const app = express();
 
@@ -50,6 +54,9 @@ app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
-app.use(errorHandler);
+
+app.use(errorHandlerMiddleware);
+app.use(nonOperationalErrorHandlerMiddleware);
+
 
 module.exports = app;
