@@ -1,11 +1,12 @@
+const path = require('path');
 const sequelize = require('sequelize');
 const shortid = require('shortid');
-const { db } = require('../../snapshort-backend/config');
+const { db } = require(path.resolve(__dirname, '../snapshort-backend'));
 
 
 module.exports.Url = db.define('Url', {
     id: {
-        type: sequelize.UUIDV4,
+        type: sequelize.UUID,
         defaultValue: sequelize.UUIDV4,
         primaryKey: true
     },
@@ -25,6 +26,20 @@ module.exports.Url = db.define('Url', {
     clicks: {
         type: sequelize.BIGINT,
         defaultValue: 0
+    },
+    createdAt: {
+        type: sequelize.DATE,
+        allowNull: true,
+        defaultValue: new Date()
+    },
+    updatedAt: {
+        type: sequelize.DATE,
+        allowNull: true,
+        defaultValue: new Date()
+    },
+    deletedAt: {
+        type: sequelize.DATE,
+        allowNull: true
     }
 }, {
     indexes: [
@@ -32,5 +47,5 @@ module.exports.Url = db.define('Url', {
             unique: true,
             fields: ['urlCode']
         }
-    ]
+    ],
 });
