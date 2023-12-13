@@ -6,7 +6,7 @@ const shortenerApp = require(path.resolve(__dirname, './../shortener'));
 const { AppError } = require('./errorHandlers');
 
 
-router.use('/auth', authenticationApp);
+router.use('/auth', authenticationApp.routes);
 router.use('/shortener', shortenerApp.routes);
 
 
