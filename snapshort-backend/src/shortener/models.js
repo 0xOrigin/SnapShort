@@ -48,7 +48,12 @@ const Url = db.define('Url', {
             fields: ['urlCode']
         }
     ],
-}).sync({ alter: true });
+});
 
+Url.sync({ alter: true }).then(() => {
+    console.log('Url table created');
+}).catch((error) => {
+    console.log(error);
+});
 
 module.exports.Url = Url;
