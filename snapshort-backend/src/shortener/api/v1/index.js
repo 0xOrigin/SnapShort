@@ -1,16 +1,9 @@
-const path = require('path');
 const express = require('express');
 const router = express.Router();
-const models = require(path.resolve(__dirname, './../../models'));
+const urlRouter = require('./url');
 
 
-router.get('/', async (req, res, next) => {
-    try {
-        res.jsonResponse(null, 200);
-    } catch (error) {
-        next(error);
-    }
-});
+router.use('/urls', urlRouter);
 
 
 module.exports = router;
