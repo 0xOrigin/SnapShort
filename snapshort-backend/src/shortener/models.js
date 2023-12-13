@@ -1,10 +1,10 @@
 const path = require('path');
 const sequelize = require('sequelize');
 const shortid = require('shortid');
-const { db } = require(path.resolve(__dirname, '../snapshort-backend'));
+const { db } = require(path.resolve(__dirname, './../snapshort-backend/databases'));
 
 
-module.exports.Url = db.define('Url', {
+const Url = db.define('Url', {
     id: {
         type: sequelize.UUID,
         defaultValue: sequelize.UUIDV4,
@@ -48,4 +48,7 @@ module.exports.Url = db.define('Url', {
             fields: ['urlCode']
         }
     ],
-});
+}).sync({ alter: true });
+
+
+module.exports.Url = Url;

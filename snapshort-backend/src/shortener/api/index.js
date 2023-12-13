@@ -1,5 +1,9 @@
-const ShortURL = require('./shorturl.model');
+const express = require('express');
+const router = express.Router();
+const apiV1 = require('./v1');
 
-module.exports = {
-    ShortURL
-};
+
+router.use('/v1', apiV1);
+
+
+module.exports = router;
