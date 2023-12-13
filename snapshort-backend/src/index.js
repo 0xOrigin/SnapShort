@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const dotenv = require('dotenv').config({ path: path.resolve(__dirname, '../../.env'), debug: true });
+const dotenv = require('dotenv').config({ path: path.resolve(__dirname, './../../.env'), override: true });
 const {
   app,
   db,
