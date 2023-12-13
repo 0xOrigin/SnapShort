@@ -8,10 +8,11 @@ services:
       args:
         - PORT=${PORT}
     restart: always
-    command: sh -c "npm start"
+    command: sh -c "npm run dev"
     volumes:
       - static_volume:/home/app/web/public
       - ./snapshort-backend:/home/app/web
+      - ./.env:/home/app/.env
     expose:
       - ${PORT}
     env_file:
