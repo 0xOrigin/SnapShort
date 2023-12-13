@@ -7,16 +7,17 @@ const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const helmet = require('helmet');
 const hpp = require('hpp');
+const router = require('./routes');
 const { jsonResponseMiddleware } = require('./jsonResponse');
 const {
-  AppError,
   errorHandlerMiddleware,
   nonOperationalErrorHandlerMiddleware
 } = require('./errorHandlers');
 
+
 const app = express();
 
-
+// 1) GLOBAL MIDDLEWARES
 app.enable('trust proxy');
 app.use(compression());
 app.use(helmet());
@@ -41,22 +42,13 @@ app.options('*', cors());
 
 app.use(jsonResponseMiddleware);
 
-// 3) ROUTES
-app.use('/', (req, res, next) => {
-  res.jsonResponse({
-    message: 'Hello from the server side!',
-    app: 'Snapshort',
-    version: '1.0.0',
-  }, 200);
-});
-
-app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
-});
+// 3) MOUNTING ROUTERS
+app.use('', router);
 
 
+// 4) ERROR HANDLING
 app.use(errorHandlerMiddleware);
 app.use(nonOperationalErrorHandlerMiddleware);
 
 
-module.exports = app;
+module.exports.app = app;
