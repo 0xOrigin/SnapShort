@@ -34,8 +34,7 @@ const Url = db.define('Url', {
     },
     updatedAt: {
         type: sequelize.DATE,
-        allowNull: true,
-        defaultValue: new Date()
+        allowNull: true
     },
     deletedAt: {
         type: sequelize.DATE,
