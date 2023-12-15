@@ -1,15 +1,10 @@
 const path = require('path');
 const express = require('express');
 const router = express.Router();
+const userRouter = require('./user');
 
 
-router.get('/', async (req, res, next) => {
-    try {
-        res.jsonResponse(null, 200);
-    } catch (error) {
-        next(error);
-    }
-});
+router.use('/users', userRouter);
 
 
 module.exports = router;
