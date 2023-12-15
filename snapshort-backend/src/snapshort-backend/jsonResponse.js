@@ -1,4 +1,3 @@
-const e = require("express");
 
 module.exports.jsonResponseMiddleware = (req, res, next) => {
   res.jsonResponse = (data, statusCode=200, message='Success', pagination=null) => {
@@ -7,7 +6,7 @@ module.exports.jsonResponseMiddleware = (req, res, next) => {
       status: statusCode,
       message: 'Success',
       pagination: pagination,
-      data: [data],
+      data: data instanceof Array ? data : [data],
       error: null
     }
 
