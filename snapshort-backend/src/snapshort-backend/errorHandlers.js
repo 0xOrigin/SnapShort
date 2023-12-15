@@ -36,7 +36,7 @@ const errorHandler = new ErrorHandler(logger);
 asyncErrorHandler = (func) => {
   return (req, res, next) => {
     func(req, res, next).catch(err => {
-      next(new AppError(err.errors?.map(e => e.message), 400));
+      next(new AppError(err.errors?.map(e => e.message) || err, 400));
     });
   };
 }
