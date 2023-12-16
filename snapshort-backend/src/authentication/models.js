@@ -1,13 +1,6 @@
-const path = require('path');
 const sequelize = require('sequelize');
-const bcrypt = require('bcryptjs');
-const { db } = require(
-  path.resolve(__dirname, './../snapshort-backend/databases'),
-);
-const constants = require(
-  path.resolve(__dirname, './../snapshort-backend/constants'),
-);
-
+const utils = require('./utils');
+const { db } = require('./../snapshort-backend/databases');
 
 const User = db.define(
   'User',
@@ -75,11 +68,11 @@ const User = db.define(
     ],
     hooks: {
       beforeCreate: async function (user) {
-        user.password = await user.hashPassword(user.password);
+        user.password = await utils.hashPassword(user.password);
       },
       beforeUpdate: async function (user) {
         if (user.changed('password'))
-          user.password = await user.hashPassword(user.password);
+          user.password = await utils.hashPassword(user.password);
       },
       afterCreate: async function (user) {
         delete user.dataValues.password;
@@ -91,20 +84,6 @@ const User = db.define(
   },
 );
 
-User.prototype.getSalt = async function () {
-  return await bcrypt.genSalt(constants.SALT_ROUNDS);
-}
-
-User.prototype.validPassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
-}
-
-User.prototype.hashPassword = async function (password) {
-  const salt = await this.getSalt();
-  return await bcrypt.hash(password, salt);
-}
-
-
 User.sync({ alter: true })
   .then(() => {
     console.log('User table created');
@@ -113,5 +92,7 @@ User.sync({ alter: true })
     console.error(error);
   });
 
+module.exports = {
+  User
+};
 
-module.exports.User = User;
