@@ -46,7 +46,7 @@ class UserService {
       },
     );
     if (user[0] === 0) throw new AppError('Validation error', 400);
-    return user[1][0];
+    return user;
   };
 
   update = async (req) => {
