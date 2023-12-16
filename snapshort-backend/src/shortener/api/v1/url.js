@@ -1,19 +1,14 @@
-const path = require('path');
 const express = require('express');
+const { UrlController } = require('./../../controllers');
 const router = express.Router();
-const {
-  getUrls,
-  getUrl,
-  getUrlDetails,
-  createUrl,
-  destroyUrl,
-} = require('./../../controllers');
+
+const controller = new UrlController();
 
 router
-  .get('/', getUrls)
-  .get('/:urlCode', getUrl)
-  .get('/:urlCode/details', getUrlDetails)
-  .post('/', createUrl)
-  .delete('/:urlCode', destroyUrl);
+  .get('/', controller.list)
+  .get('/:urlCode', controller.retrieve)
+  .get('/:urlCode/details', controller.details)
+  .post('/', controller.create)
+  .delete('/:urlCode', controller.destroy);
 
 module.exports = router;
