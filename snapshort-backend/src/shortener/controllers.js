@@ -1,57 +1,27 @@
-const path = require('path');
 const models = require('./models');
-const { asyncErrorHandler } = require(path.resolve(__dirname, './../snapshort-backend/errorHandlers'));
+const services = require('./services');
+const BaseController = require('./../snapshort-backend/baseController');
+const { asyncErrorHandler } = require('./../snapshort-backend/errorHandlers');
 
 
-const getUrls = asyncErrorHandler(async (req, res, next) => {
-    const urls = await models.Url.findAll();
-    res.jsonResponse(urls, 200);
-});
+class UrlController extends BaseController {
+    
+    constructor() {
+        super(models.Url, services.UrlService);
+    }
 
-
-const getUrl = asyncErrorHandler(async (req, res, next) => {
-    const url = await models.Url.findOne({
-        where: {
-            urlCode: req.params.urlCode
-        }
+    retrieve = asyncErrorHandler(async (req, res, next) => {
+        const url = await this.service.retrieve(req);
+        res.redirect(url.url);
     });
-    await url.increment('clicks');
-    res.redirect(url.url);
-});
 
-
-const getUrlDetails = asyncErrorHandler(async (req, res, next) => {
-    const url = await models.Url.findOne({
-        where: {
-            urlCode: req.params.urlCode
-        }
+    details = asyncErrorHandler(async (req, res, next) => {
+        const url = await this.service.retrieveOne(req);
+        res.jsonResponse(url, 200);
     });
-    res.jsonResponse(url, 200);
-});
-
-
-const createUrl = asyncErrorHandler(async (req, res, next) => {
-    const url = await models.Url.create({
-        url: req.body.url
-    });
-    res.jsonResponse(url, 201);
-});
-
-
-const destroyUrl = asyncErrorHandler(async (req, res, next) => {
-    const url = await models.Url.destroy({
-        where: {
-            urlCode: req.params.urlCode
-        }
-    });
-    res.jsonResponse(null, 204);
-});
+}
 
 
 module.exports = {
-    getUrls,
-    getUrl,
-    getUrlDetails,
-    createUrl,
-    destroyUrl
+    UrlController,
 };
