@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const constants = require('./../snapshort-backend/constants');
+const constants = require('../config/constants');
 
 const getSalt = async () => {
   return await bcrypt.genSalt(constants.SALT_ROUNDS);
@@ -19,17 +19,28 @@ const generateAccessToken = (user) => {
   return jwt.sign(
     {
       id: user.id,
-      email: user.email,
     },
-    constants.SECRET_KEY,
+    process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: constants.JWT_EXPIRES_IN,
+      expiresIn: constants.JWT_ACCESS_EXPIRES_IN,
     },
   );
 };
 
-const verifyToken = (token) => {
-  return jwt.verify(token, constants.SECRET_KEY);
+const generateRefreshToken = (user) => {
+  return jwt.sign(
+    {
+      id: user.id,
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+      expiresIn: constants.JWT_REFRESH_EXPIRES_IN,
+    },
+  );
+}
+
+const verifyToken = (token, secret) => {
+  return jwt.verify(token, secret);
 };
 
 module.exports = {
@@ -37,5 +48,6 @@ module.exports = {
   hashPassword,
   comparePassword,
   generateAccessToken,
+  generateRefreshToken,
   verifyToken,
 };

@@ -1,4 +1,4 @@
-const { asyncErrorHandler } = require('./errorHandlers');
+const { asyncErrorHandler } = require('./error-handlers');
 
 class BaseController {
 

@@ -3,18 +3,18 @@ version: '3.8'
 services:
   web:
     build:
-      context: ./snapshort-backend
+      context: ./backend
       dockerfile: Dockerfile
       args:
         - PORT=${PORT}
     restart: always
     command: sh -c "npm run dev"
     volumes:
-      - static_volume:/home/app/web/public
-      - ./snapshort-backend:/home/app/web
+      - static_volume:/home/app/backend/public
+      - ./backend:/home/app/backend
       - ./.env:/home/app/.env
     expose:
-      - ${PORT}
+      - 3000
     env_file:
       - ./.env
     depends_on:
@@ -30,7 +30,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - static_volume:/home/app/web/public
+      - static_volume:/home/app/backend/public
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     depends_on:
       - web

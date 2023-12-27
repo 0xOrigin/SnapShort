@@ -1,5 +1,5 @@
 const models = require('./models');
-const { AppError } = require('./../snapshort-backend/errorHandlers');
+const { AppError } = require('../config/error-handlers');
 
 class UrlService {
   constructor() {

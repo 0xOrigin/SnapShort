@@ -1,0 +1,10 @@
+const SALT_ROUNDS = 10;
+const JWT_ACCESS_EXPIRES_IN = process.env.JWT_ACCESS_EXPIRES_IN || '1d';
+const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
+
+
+module.exports = {
+    SALT_ROUNDS,
+    JWT_ACCESS_EXPIRES_IN,
+    JWT_REFRESH_EXPIRES_IN,
+};

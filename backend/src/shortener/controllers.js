@@ -1,7 +1,7 @@
 const models = require('./models');
 const services = require('./services');
-const BaseController = require('./../snapshort-backend/baseController');
-const { asyncErrorHandler } = require('./../snapshort-backend/errorHandlers');
+const BaseController = require('./../config/base-controller');
+const { asyncErrorHandler } = require('./../config/error-handlers');
 
 
 class UrlController extends BaseController {

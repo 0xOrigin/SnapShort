@@ -1,6 +1,6 @@
 const sequelize = require('sequelize');
 const utils = require('./utils');
-const { db } = require('./../snapshort-backend/databases');
+const { db } = require('./../config/databases');
 
 const User = db.define(
   'User',

@@ -8,11 +8,11 @@ const cors = require('cors');
 const helmet = require('helmet');
 const hpp = require('hpp');
 const router = require('./routes');
-const { jsonResponseMiddleware } = require('./jsonResponse');
+const { jsonResponseMiddleware } = require('./json-response');
 const {
   errorHandlerMiddleware,
   nonOperationalErrorHandlerMiddleware
-} = require('./errorHandlers');
+} = require('./error-handlers');
 
 
 const app = express();

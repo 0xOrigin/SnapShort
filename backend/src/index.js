@@ -8,7 +8,7 @@ const {
   uncaughtExceptionHandler,
   unhandledRejectionHandler,
   handleSIGTERM,
-} = require('./snapshort-backend');
+} = require('./config');
 
 const PORT = process.env.PORT || 3000;
 

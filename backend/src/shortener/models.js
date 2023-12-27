@@ -1,7 +1,7 @@
 const path = require('path');
 const sequelize = require('sequelize');
 const shortid = require('shortid');
-const { db } = require(path.resolve(__dirname, './../snapshort-backend/databases'));
+const { db } = require(path.resolve(__dirname, './../config/databases'));
 
 
 const Url = db.define('Url', {
