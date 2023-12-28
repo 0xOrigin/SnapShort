@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const constants = require('../config/constants');
 
+
 const getSalt = async () => {
   return await bcrypt.genSalt(constants.SALT_ROUNDS);
 };
@@ -39,9 +40,6 @@ const generateRefreshToken = (user) => {
   );
 }
 
-const verifyToken = (token, secret) => {
-  return jwt.verify(token, secret);
-};
 
 module.exports = {
   getSalt,
@@ -49,5 +47,4 @@ module.exports = {
   comparePassword,
   generateAccessToken,
   generateRefreshToken,
-  verifyToken,
 };

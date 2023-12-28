@@ -1,6 +1,7 @@
 const models = require('./models');
 const utils = require('./utils');
-const { AppError } = require('./../config/error-handlers');
+const { AppError } = require('../config/error-handlers');
+
 
 class UserService {
 
@@ -91,8 +92,9 @@ class AuthService {
     });
     if (!user || !(await utils.comparePassword(req.body.password, user.password)))
       throw new AppError('Invalid email or password', 400);
-    const token = utils.generateAccessToken(user);
-    return token;
+    const refreshToken = utils.generateRefreshToken(user);
+    const accessToken = utils.generateAccessToken(user);
+    return { refreshToken, accessToken };
   };
 }
 
