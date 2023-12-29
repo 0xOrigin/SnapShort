@@ -21,8 +21,10 @@ const Url = db.define('Url', {
     url: {
         type: sequelize.STRING,
         allowNull: false,
-        validator: {
-            isUrl: true
+        validate: {
+            isUrl: true,
+            notNull: true,
+            notEmpty: true,
         }
     },
     urlCode: {
