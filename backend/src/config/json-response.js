@@ -10,7 +10,7 @@ module.exports.jsonResponseMiddleware = (req, res, next) => {
       message: message,
       pagination: pagination,
       data: data,
-      error: null,
+      errors: null,
     };
 
     if (statusCode === 204) {
@@ -20,18 +20,14 @@ module.exports.jsonResponseMiddleware = (req, res, next) => {
     if (statusCode >= 400) {
       errorShape = {
         message: data.message,
-        stackTrace: data.stack,
-        error: data,
       };
-
-      if (process.env.NODE_ENV === 'production') {
-        delete errorShape.stackTrace;
-        delete errorShape.error;
-      }
+      // if (data.errors) {
+      //   errorShape.errors = data.errors;
+      // }
 
       response.message = 'Fail';
       response.data = null;
-      response.error = [errorShape];
+      response.errors = [errorShape];
     }
 
     return res.status(statusCode).json(response);

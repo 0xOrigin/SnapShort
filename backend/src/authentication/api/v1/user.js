@@ -1,11 +1,11 @@
 const express = require('express');
-const { authenticate } = require('../../middlewares');
+const { isAuthenticated } = require('../../middlewares');
 const { UserController } = require('../../controllers');
 const router = express.Router();
 
 controller = new UserController();
 
-router.use(authenticate);
+router.use(isAuthenticated);
 
 router
   .get('/', controller.list)

@@ -8,6 +8,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const hpp = require('hpp');
 const router = require('./routes');
+const { authenticate } = require('../authentication/middlewares');
 const { jsonResponseMiddleware } = require('./json-response');
 const {
   errorHandlerMiddleware,
@@ -42,6 +43,8 @@ app.use(cors({
   credentials: true,
 }));
 app.options('*', cors());
+
+app.use(authenticate);
 
 app.use(jsonResponseMiddleware);
 
