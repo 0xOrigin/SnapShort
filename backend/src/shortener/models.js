@@ -1,7 +1,7 @@
-const path = require('path');
 const sequelize = require('sequelize');
 const shortid = require('shortid');
-const { db } = require(path.resolve(__dirname, './../config/databases'));
+const { User } = require('../authentication/models');
+const { db } = require('../config/databases');
 
 
 const Url = db.define('Url', {
@@ -9,6 +9,14 @@ const Url = db.define('Url', {
         type: sequelize.UUID,
         defaultValue: sequelize.UUIDV4,
         primaryKey: true
+    },
+    userId: {
+        type: sequelize.UUID,
+        references: {
+            model: User,
+            key: 'id'
+        },
+        allowNull: true
     },
     url: {
         type: sequelize.STRING,
@@ -45,6 +53,9 @@ const Url = db.define('Url', {
         {
             unique: true,
             fields: ['urlCode']
+        },
+        {
+            fields: ['userId']
         }
     ],
 });
