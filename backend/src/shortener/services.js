@@ -31,13 +31,12 @@ class UrlService {
   };
 
   create = async (req) => {
-    const url = await this.model.create(
-      {
-        url: req.body.url,
-        userId: req.user?.id,
-      },
-      { returning: true },
-    );
+    let data = {
+      url: req.body.url,
+      userId: req.user?.id,
+    };
+    if (req.body.urlCode) data.urlCode = req.body.urlCode;
+    const url = await this.model.create(data, { returning: true });
     if (url[0] === 0) throw new AppError('Validation error', 400);
     return url;
   };
