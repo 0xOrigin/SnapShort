@@ -1,71 +1,66 @@
-const sequelize = require('sequelize');
-const shortid = require('shortid');
-const { User } = require('../authentication/models');
+const { Sequelize, Model, DataTypes } = require('sequelize');
 const { db } = require('../config/databases');
+const shortid = require('shortid');
 
 
-const Url = db.define('Url', {
+class Url extends Model {}
+
+Url.init({
     id: {
-        type: sequelize.UUID,
-        defaultValue: sequelize.UUIDV4,
-        primaryKey: true
-    },
-    userId: {
-        type: sequelize.UUID,
-        references: {
-            model: User,
-            key: 'id'
-        },
-        allowNull: true
+      type: DataTypes.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      primaryKey: true,
     },
     url: {
-        type: sequelize.STRING,
-        allowNull: false,
-        validate: {
-            isUrl: true,
-            notNull: true,
-            notEmpty: true,
-        }
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isUrl: true,
+        notNull: true,
+        notEmpty: true,
+      },
     },
     urlCode: {
-        type: sequelize.STRING,
-        defaultValue: shortid.generate,
-        unique: true,
-        allowNull: false
+      type: DataTypes.STRING,
+      defaultValue: shortid.generate,
+      unique: true,
+      allowNull: false,
     },
     clicks: {
-        type: sequelize.BIGINT,
-        defaultValue: 0
+      type: DataTypes.BIGINT,
+      defaultValue: 0,
     },
     createdAt: {
-        type: sequelize.DATE,
-        allowNull: true,
-        defaultValue: new Date()
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: new Date(),
     },
     updatedAt: {
-        type: sequelize.DATE,
-        allowNull: true
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     deletedAt: {
-        type: sequelize.DATE,
-        allowNull: true
-    }
-}, {
-    indexes: [
-        {
-            unique: true,
-            fields: ['urlCode']
-        },
-        {
-            fields: ['userId']
-        }
-    ],
-});
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+  },
+  {
+    sequelize: db,
+    modelName: 'Url',
+    paranoid: true,
+  },
+);
 
-Url.sync({ alter: true }).then(() => {
-    console.log('Url table created');
-}).catch((error) => {
-    console.log(error);
-});
+Url.associations = (models) => {
+  Url.belongsTo(models.User, {
+    foreignKey: 'userId',
+    as: 'user',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
+};
 
-module.exports.Url = Url;
+
+module.exports = {
+  Url,
+};

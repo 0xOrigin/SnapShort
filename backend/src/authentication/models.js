@@ -1,70 +1,94 @@
-const sequelize = require('sequelize');
+const { Sequelize, Model, DataTypes } = require('sequelize');
+const { db } = require('../config/databases');
 const utils = require('./utils');
-const { db } = require('./../config/databases');
 
-const User = db.define(
-  'User',
-  {
+
+class User extends Model { }
+
+User.init({
     id: {
-      type: sequelize.UUID,
-      defaultValue: sequelize.UUIDV4,
-      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      primaryKey: true
     },
     username: {
-      type: sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      validate: {
+          notNull: true,
+          notEmpty: true,
+      }
     },
     firstName: {
-      type: sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+          notNull: true,
+          notEmpty: true,
+      }
     },
     lastName: {
-      type: sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+          notNull: true,
+          notEmpty: true,
+      }
     },
     email: {
-      type: sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
+      validate: {
+          isEmail: true,
+          notNull: true,
+          notEmpty: true,
+      }
     },
     password: {
-      type: sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+          notNull: true,
+          notEmpty: true,
+      }
     },
     lastLogin: {
-      type: sequelize.DATE,
-      allowNull: true,
+      type: DataTypes.DATE,
+      allowNull: true
     },
     isActive: {
-      type: sequelize.BOOLEAN,
+      type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: true,
+      defaultValue: true
     },
     isVerified: {
-      type: sequelize.BOOLEAN,
+      type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false,
+      defaultValue: false
     },
     createdAt: {
-      type: sequelize.DATE,
+      type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: new Date(),
+      defaultValue: new Date()
     },
     updatedAt: {
-      type: sequelize.DATE,
-      allowNull: true,
+      type: DataTypes.DATE,
+      allowNull: true
     },
     deletedAt: {
-      type: sequelize.DATE,
-      allowNull: true,
-    },
-  },
-  {
+      type: DataTypes.DATE,
+      allowNull: true
+    }
+  }, {
+    sequelize: db,
+    modelName: 'User',
+    paranoid: true,
     indexes: [
       {
         unique: true,
-        fields: ['email'],
-      },
+        fields: ['email']
+      }
     ],
     hooks: {
       beforeCreate: async function (user) {
@@ -81,18 +105,13 @@ const User = db.define(
         delete user.dataValues.password;
       },
     },
-  },
-);
+});
 
-User.sync({ alter: true })
-  .then(() => {
-    console.log('User table created');
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+User.associations = (models) => {
+  User.hasMany(models.Url, { as: 'urls' });
+};
+
 
 module.exports = {
   User
 };
-

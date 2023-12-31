@@ -8,7 +8,7 @@ services:
       args:
         - PORT=${PORT}
     restart: always
-    command: sh -c "npm run dev"
+    command: sh -c "npm run migrate:up && npm run dev"
     volumes:
       - static_volume:/home/app/backend/public
       - ./backend:/home/app/backend

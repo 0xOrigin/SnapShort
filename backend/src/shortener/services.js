@@ -1,6 +1,7 @@
 const models = require('./models');
 const { AppError } = require('../config/error-handlers');
 
+
 class UrlService {
   constructor() {
     this.model = models.Url;
@@ -21,6 +22,7 @@ class UrlService {
         urlCode: req.params.urlCode,
       },
     });
+    console.log(url.user);
     return url;
   };
 

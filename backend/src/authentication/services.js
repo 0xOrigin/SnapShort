@@ -54,6 +54,7 @@ class UserService {
     const user = await this.model.update(
       {
         ...req.body,
+        updatedAt: new Date(),
       },
       {
         where: {
@@ -92,6 +93,7 @@ class AuthService {
     });
     if (!user || !(await utils.comparePassword(req.body.password, user.password)))
       throw new AppError('Invalid email or password', 400);
+    await user.update({ lastLogin: new Date() });
     const refreshToken = utils.generateRefreshToken(user);
     const accessToken = utils.generateAccessToken(user);
     return { refreshToken, accessToken };

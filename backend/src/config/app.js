@@ -44,9 +44,9 @@ app.use(cors({
 }));
 app.options('*', cors());
 
-app.use(authenticate);
-
 app.use(jsonResponseMiddleware);
+
+app.use(authenticate);
 
 // 3) MOUNTING ROUTERS
 app.use('', router);
