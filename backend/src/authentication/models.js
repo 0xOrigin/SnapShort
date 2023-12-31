@@ -15,24 +15,24 @@ User.init({
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-          notNull: true,
-          notEmpty: true,
+        notNull: true,
+        notEmpty: true,
       }
     },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-          notNull: true,
-          notEmpty: true,
+        notNull: true,
+        notEmpty: true,
       }
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-          notNull: true,
-          notEmpty: true,
+        notNull: true,
+        notEmpty: true,
       }
     },
     email: {
@@ -40,17 +40,17 @@ User.init({
       allowNull: false,
       unique: true,
       validate: {
-          isEmail: true,
-          notNull: true,
-          notEmpty: true,
+        isEmail: true,
+        notNull: true,
+        notEmpty: true,
       }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-          notNull: true,
-          notEmpty: true,
+        notNull: true,
+        notEmpty: true,
       }
     },
     lastLogin: {
@@ -106,10 +106,6 @@ User.init({
       },
     },
 });
-
-User.associations = (models) => {
-  User.hasMany(models.Url, { as: 'urls' });
-};
 
 
 module.exports = {

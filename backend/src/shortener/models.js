@@ -51,14 +51,17 @@ Url.init({
   },
 );
 
-Url.associations = (models) => {
-  Url.belongsTo(models.User, {
-    foreignKey: 'userId',
-    as: 'user',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  });
-};
+Url.belongsTo(db.models.User, {
+  foreignKey: 'userId',
+  as: 'user',
+  onUpdate: 'CASCADE',
+  onDelete: 'SET NULL',
+});
+
+db.models.User.hasMany(Url, {
+  foreignKey: 'userId',
+  as: 'urls',
+});
 
 
 module.exports = {

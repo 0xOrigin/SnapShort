@@ -22,7 +22,6 @@ class UrlService {
         urlCode: req.params.urlCode,
       },
     });
-    console.log(url.user);
     return url;
   };
 
