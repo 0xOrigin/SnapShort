@@ -1,0 +1,9 @@
+const path = require('path');
+const dotenv = require('dotenv').config({ path: path.resolve(__dirname, '../.env'), override: true });
+
+module.exports = {
+    'config': path.resolve(__dirname, './src/config/config.js'),
+    'models-path': path.resolve(__dirname, './src/*/models'),
+    'seeders-path': path.resolve(__dirname, './seeders'),
+    'migrations-path': path.resolve(__dirname, './migrations'),
+};
